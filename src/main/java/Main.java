@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
 
         // main logic for working with books
-        
+
         Scanner scanner = new Scanner(System.in);
 
         Book[] books = new Book[5];
@@ -12,6 +12,8 @@ public class Main {
         books[0] = new Book("Кобзар", "Тарас Шевченко", 1840, 250.0);
         books[1] = new Book("Лісова пісня", "Леся Українка", 1911, 180.0);
         books[2] = new Book("Тигролови", "Іван Багряний", 1944, 220.0);
+
+// input from keyboard
 
         System.out.println("Введіть дані для 4-ї книги:");
         System.out.print("Назва: ");
