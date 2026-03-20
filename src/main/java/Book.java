@@ -45,6 +45,7 @@ public class Book {
         this.price = price;
     }
 
+// methods for comparison and output
     @Override
     public String toString() {
         return "Book{" +
