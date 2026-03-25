@@ -7,7 +7,9 @@ public class Main {
 
     public static void main(String[] args) {
         boolean running = true;
-
+/**
+ * Створює нову книгу та обробляє помилки введення.
+ */
         while (running) {
             printMenu();
             int choice = readInt("Оберіть пункт меню: ");
