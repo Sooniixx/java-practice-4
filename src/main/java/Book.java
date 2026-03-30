@@ -6,15 +6,36 @@ public class Book {
     private int year;
     private double price;
     private int pages;
-    private String genre;
+    private Genre genre;
 
-    public Book(String title, String author, int year, double price, int pages, String genre) {
+    private static int bookCount = 0;
+
+    public Book(String title, String author, int year, double price, int pages, Genre genre) {
         setTitle(title);
         setAuthor(author);
         setYear(year);
         setPrice(price);
         setPages(pages);
         setGenre(genre);
+        bookCount++;
+    }
+
+    public Book(Book other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Об'єкт для копіювання не може бути null.");
+        }
+
+        this.title = other.title;
+        this.author = other.author;
+        this.year = other.year;
+        this.price = other.price;
+        this.pages = other.pages;
+        this.genre = other.genre;
+        bookCount++;
+    }
+
+    public static int getBookCount() {
+        return bookCount;
     }
 
     public String getTitle() {
@@ -53,9 +74,7 @@ public class Book {
     public double getPrice() {
         return price;
     }
-/**
- * Встановлює ціну книги з перевіркою коректності.
- */
+
     public void setPrice(double price) {
         if (price <= 0) {
             throw new IllegalArgumentException("Ціна повинна бути більшою за 0.");
@@ -74,13 +93,13 @@ public class Book {
         this.pages = pages;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        if (genre == null || genre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Жанр не може бути порожнім.");
+    public void setGenre(Genre genre) {
+        if (genre == null) {
+            throw new IllegalArgumentException("Жанр не може бути null.");
         }
         this.genre = genre;
     }
@@ -93,7 +112,7 @@ public class Book {
                 ", year=" + year +
                 ", price=" + price +
                 ", pages=" + pages +
-                ", genre='" + genre + '\'' +
+                ", genre=" + genre +
                 '}';
     }
 
@@ -107,6 +126,6 @@ public class Book {
                 pages == book.pages &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(author, book.author) &&
-                Objects.equals(genre, book.genre);
+                genre == book.genre;
     }
 }
