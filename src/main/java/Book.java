@@ -74,7 +74,9 @@ public class Book {
     public double getPrice() {
         return price;
     }
-
+/**
+ * Перевіряє коректність ціни.
+ */
     public void setPrice(double price) {
         if (price <= 0) {
             throw new IllegalArgumentException("Ціна повинна бути більшою за 0.");
