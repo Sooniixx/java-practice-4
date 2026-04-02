@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Library library = new Library("My Library");
+    private static final ArrayList<Book> books = new ArrayList<Book>();
 
     public static void main(String[] args) {
         printHeader();
@@ -21,12 +22,6 @@ public class Main {
                     printAllBooks();
                     break;
                 case 3:
-                    testCopyConstructor();
-                    break;
-                case 4:
-                    showBookCount();
-                    break;
-                case 5:
                     System.out.println("Роботу завершено.");
                     running = false;
                     break;
@@ -39,18 +34,16 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Практична робота №6");
-        System.out.println("Тема: класи, статичні члени, агрегація, enum");
-        System.out.println("Предметна область: книги та бібліотека");
+        System.out.println("Практична робота №7");
+        System.out.println("Тема: наслідування, поліморфізм, ArrayList");
+        System.out.println("Базовий клас: Book");
     }
 
     private static void printMenu() {
         System.out.println("\n=== МЕНЮ ===");
-        System.out.println("1. Створити нову книгу");
+        System.out.println("1. Створити звичайну книгу");
         System.out.println("2. Вивести всі книги");
-        System.out.println("3. Перевірити конструктор копіювання");
-        System.out.println("4. Показати кількість створених книг");
-        System.out.println("5. Завершити роботу");
+        System.out.println("3. Завершити роботу");
     }
 
     private static void createBook() {
@@ -63,7 +56,7 @@ public class Main {
             Genre genre = readGenre();
 
             Book book = new Book(title, author, year, price, pages, genre);
-            library.addBook(book);
+            books.add(book);
 
             System.out.println("Книгу успішно додано.");
         } catch (IllegalArgumentException e) {
@@ -72,28 +65,15 @@ public class Main {
     }
 
     private static void printAllBooks() {
-        System.out.println("\nСписок книг у бібліотеці:");
-        library.printBooks();
-    }
-
-    private static void testCopyConstructor() {
-        if (library.getBooks().isEmpty()) {
-            System.out.println("Немає книги для копіювання.");
+        if (books.isEmpty()) {
+            System.out.println("Список книг порожній.");
             return;
         }
 
-        Book original = library.getBooks().get(0);
-        Book copy = new Book(original);
-
-        System.out.println("Оригінал:");
-        System.out.println(original);
-
-        System.out.println("Копія:");
-        System.out.println(copy);
-    }
-
-    private static void showBookCount() {
-        System.out.println("Кількість створених книг: " + Book.getBookCount());
+        System.out.println("\nСписок усіх книг:");
+        for (Book book : books) {
+            System.out.println(book);
+        }
     }
 
     private static String readNonEmptyString(String message) {

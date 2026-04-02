@@ -8,8 +8,6 @@ public class Book {
     private int pages;
     private Genre genre;
 
-    private static int bookCount = 0;
-
     public Book(String title, String author, int year, double price, int pages, Genre genre) {
         setTitle(title);
         setAuthor(author);
@@ -17,7 +15,6 @@ public class Book {
         setPrice(price);
         setPages(pages);
         setGenre(genre);
-        bookCount++;
     }
 
     public Book(Book other) {
@@ -31,11 +28,6 @@ public class Book {
         this.price = other.price;
         this.pages = other.pages;
         this.genre = other.genre;
-        bookCount++;
-    }
-
-    public static int getBookCount() {
-        return bookCount;
     }
 
     public String getTitle() {
@@ -74,9 +66,7 @@ public class Book {
     public double getPrice() {
         return price;
     }
-/**
- * Перевіряє коректність ціни.
- */
+
     public void setPrice(double price) {
         if (price <= 0) {
             throw new IllegalArgumentException("Ціна повинна бути більшою за 0.");
