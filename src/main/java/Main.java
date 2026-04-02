@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Драйвер програми для демонстрації наслідування та поліморфізму.
- */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Book> books = new ArrayList<Book>();
@@ -14,23 +11,17 @@ public class Main {
         boolean running = true;
 
         while (running) {
-            printMenu();
+            printMainMenu();
             int choice = readInt("Оберіть пункт меню: ");
 
             switch (choice) {
                 case 1:
-                    createBook();
+                    createObjectMenu();
                     break;
                 case 2:
-                    createEBook();
-                    break;
-                case 3:
-                    createPaperBook();
-                    break;
-                case 4:
                     printAllBooks();
                     break;
-                case 5:
+                case 3:
                     System.out.println("Роботу завершено.");
                     running = false;
                     break;
@@ -43,18 +34,55 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Практична робота №7");
-        System.out.println("Тема: наслідування, поліморфізм, ArrayList");
-        System.out.println("Предметна область: Book, EBook, PaperBook");
+        System.out.println("Практична робота №8");
+        System.out.println("Тема: розширення ієрархії класів, поліморфізм, меню створення об'єктів");
+        System.out.println("Предметна область: Book hierarchy");
     }
 
-    private static void printMenu() {
-        System.out.println("\n=== МЕНЮ ===");
-        System.out.println("1. Створити звичайну книгу");
-        System.out.println("2. Створити електронну книгу");
-        System.out.println("3. Створити паперову книгу");
-        System.out.println("4. Вивести всі об'єкти");
-        System.out.println("5. Завершити роботу");
+    private static void printMainMenu() {
+        System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
+        System.out.println("1. Створити новий об'єкт");
+        System.out.println("2. Вивести інформацію про всі об'єкти");
+        System.out.println("3. Завершити роботу");
+    }
+
+    private static void createObjectMenu() {
+        boolean back = false;
+
+        while (!back) {
+            System.out.println("\n=== СТВОРЕННЯ ОБ'ЄКТА ===");
+            System.out.println("1. Book");
+            System.out.println("2. EBook");
+            System.out.println("3. PaperBook");
+            System.out.println("4. AudioBook");
+            System.out.println("5. Textbook");
+            System.out.println("6. Повернутися до головного меню");
+
+            int choice = readInt("Оберіть тип об'єкта: ");
+
+            switch (choice) {
+                case 1:
+                    createBook();
+                    break;
+                case 2:
+                    createEBook();
+                    break;
+                case 3:
+                    createPaperBook();
+                    break;
+                case 4:
+                    createAudioBook();
+                    break;
+                case 5:
+                    createTextbook();
+                    break;
+                case 6:
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Невірний вибір. Спробуйте ще раз.");
+            }
+        }
     }
 
     private static void createBook() {
@@ -66,10 +94,8 @@ public class Main {
             int pages = readInt("Введіть кількість сторінок: ");
             Genre genre = readGenre();
 
-            Book book = new Book(title, author, year, price, pages, genre);
-            books.add(book);
-
-            System.out.println("Звичайну книгу успішно додано.");
+            books.add(new Book(title, author, year, price, pages, genre));
+            System.out.println("Book успішно додано.");
         } catch (IllegalArgumentException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
@@ -86,10 +112,8 @@ public class Main {
             double fileSizeMb = readDouble("Введіть розмір файлу (MB): ");
             String fileFormat = readNonEmptyString("Введіть формат файлу: ");
 
-            Book ebook = new EBook(title, author, year, price, pages, genre, fileSizeMb, fileFormat);
-            books.add(ebook);
-
-            System.out.println("Електронну книгу успішно додано.");
+            books.add(new EBook(title, author, year, price, pages, genre, fileSizeMb, fileFormat));
+            System.out.println("EBook успішно додано.");
         } catch (IllegalArgumentException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
@@ -106,26 +130,62 @@ public class Main {
             String coverType = readNonEmptyString("Введіть тип обкладинки: ");
             double weight = readDouble("Введіть вагу книги: ");
 
-            Book paperBook = new PaperBook(title, author, year, price, pages, genre, coverType, weight);
-            books.add(paperBook);
-
-            System.out.println("Паперову книгу успішно додано.");
+            books.add(new PaperBook(title, author, year, price, pages, genre, coverType, weight));
+            System.out.println("PaperBook успішно додано.");
         } catch (IllegalArgumentException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
     }
-/**
- * Демонструє поліморфізм: об'єкти різних підкласів
- * зберігаються в одній колекції ArrayList<Book>
- * і виводяться через посилання на базовий тип.
- */
+
+    private static void createAudioBook() {
+        try {
+            String title = readNonEmptyString("Введіть назву книги: ");
+            String author = readNonEmptyString("Введіть автора: ");
+            int year = readInt("Введіть рік видання: ");
+            double price = readDouble("Введіть ціну: ");
+            int pages = readInt("Введіть кількість сторінок: ");
+            Genre genre = readGenre();
+            double fileSizeMb = readDouble("Введіть розмір файлу (MB): ");
+            String fileFormat = readNonEmptyString("Введіть формат файлу: ");
+            double durationHours = readDouble("Введіть тривалість у годинах: ");
+            String narrator = readNonEmptyString("Введіть ім'я диктора: ");
+
+            books.add(new AudioBook(title, author, year, price, pages, genre,
+                    fileSizeMb, fileFormat, durationHours, narrator));
+            System.out.println("AudioBook успішно додано.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Помилка: " + e.getMessage());
+        }
+    }
+
+    private static void createTextbook() {
+        try {
+            String title = readNonEmptyString("Введіть назву книги: ");
+            String author = readNonEmptyString("Введіть автора: ");
+            int year = readInt("Введіть рік видання: ");
+            double price = readDouble("Введіть ціну: ");
+            int pages = readInt("Введіть кількість сторінок: ");
+            Genre genre = readGenre();
+            String coverType = readNonEmptyString("Введіть тип обкладинки: ");
+            double weight = readDouble("Введіть вагу книги: ");
+            String subject = readNonEmptyString("Введіть предмет: ");
+            int gradeLevel = readInt("Введіть клас навчання: ");
+
+            books.add(new Textbook(title, author, year, price, pages, genre,
+                    coverType, weight, subject, gradeLevel));
+            System.out.println("Textbook успішно додано.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Помилка: " + e.getMessage());
+        }
+    }
+
     private static void printAllBooks() {
         if (books.isEmpty()) {
-            System.out.println("Список книг порожній.");
+            System.out.println("Колекція порожня.");
             return;
         }
 
-        System.out.println("\nУсі об'єкти в колекції ArrayList<Book>:");
+        System.out.println("\n=== УСІ ОБ'ЄКТИ ===");
         for (Book book : books) {
             System.out.println(book);
         }
@@ -185,8 +245,7 @@ public class Main {
             System.out.println("Оберіть жанр:");
             Genre[] genres = Genre.values();
 
-            int i;
-            for (i = 0; i < genres.length; i++) {
+            for (int i = 0; i < genres.length; i++) {
                 System.out.println((i + 1) + ". " + genres[i]);
             }
 
