@@ -5,6 +5,9 @@ public class Textbook extends PaperBook {
     private String subject;
     private int gradeLevel;
 
+    /**
+     * Конструктор з параметрами.
+     */
     public Textbook(String title, String author, int year, double price, int pages, Genre genre,
                     String coverType, double weight,
                     String subject, int gradeLevel) {
@@ -34,7 +37,9 @@ public class Textbook extends PaperBook {
         }
         this.gradeLevel = gradeLevel;
     }
-
+/**
+ * Повертає рядкове представлення навчальної книги.
+ */
     @Override
     public String toString() {
         return "Textbook{" +

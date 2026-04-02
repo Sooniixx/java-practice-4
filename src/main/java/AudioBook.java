@@ -34,7 +34,9 @@ public class AudioBook extends EBook {
         }
         this.narrator = narrator;
     }
-
+/**
+ * Повертає рядкове представлення аудіокниги.
+ */
     @Override
     public String toString() {
         return "AudioBook{" +
