@@ -33,7 +33,9 @@ public class PaperBook extends Book {
         }
         this.weight = weight;
     }
-
+/**
+ * Повертає рядкове представлення навчальної книги.
+ */
     @Override
     public String toString() {
         return "PaperBook{" +

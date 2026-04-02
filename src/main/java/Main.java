@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Драйвер програми для демонстрації розширеної ієрархії класів та поліморфізму.
+ */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Book> books = new ArrayList<Book>();
@@ -33,12 +36,18 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * Інформаційна шапка програми.
+     */
     private static void printHeader() {
         System.out.println("Практична робота №8");
         System.out.println("Тема: розширення ієрархії класів, поліморфізм, меню створення об'єктів");
         System.out.println("Предметна область: Book hierarchy");
     }
 
+    /**
+     * Головне меню програми.
+     */
     private static void printMainMenu() {
         System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
         System.out.println("1. Створити новий об'єкт");
@@ -46,6 +55,9 @@ public class Main {
         System.out.println("3. Завершити роботу");
     }
 
+    /**
+     * Підменю створення об'єктів.
+     */
     private static void createObjectMenu() {
         boolean back = false;
 
@@ -85,6 +97,9 @@ public class Main {
         }
     }
 
+    /**
+     * Створює об'єкт Book.
+     */
     private static void createBook() {
         try {
             String title = readNonEmptyString("Введіть назву книги: ");
@@ -101,6 +116,9 @@ public class Main {
         }
     }
 
+    /**
+     * Створює об'єкт EBook.
+     */
     private static void createEBook() {
         try {
             String title = readNonEmptyString("Введіть назву книги: ");
@@ -119,6 +137,9 @@ public class Main {
         }
     }
 
+    /**
+     * Створює об'єкт PaperBook.
+     */
     private static void createPaperBook() {
         try {
             String title = readNonEmptyString("Введіть назву книги: ");
@@ -137,6 +158,9 @@ public class Main {
         }
     }
 
+    /**
+     * Створює об'єкт AudioBook.
+     */
     private static void createAudioBook() {
         try {
             String title = readNonEmptyString("Введіть назву книги: ");
@@ -158,6 +182,9 @@ public class Main {
         }
     }
 
+    /**
+     * Створює об'єкт Textbook.
+     */
     private static void createTextbook() {
         try {
             String title = readNonEmptyString("Введіть назву книги: ");
@@ -179,6 +206,9 @@ public class Main {
         }
     }
 
+    /**
+     * Демонструє поліморфізм через одну колекцію ArrayList<Book>.
+     */
     private static void printAllBooks() {
         if (books.isEmpty()) {
             System.out.println("Колекція порожня.");
@@ -191,6 +221,9 @@ public class Main {
         }
     }
 
+    /**
+     * Зчитує непорожній рядок.
+     */
     private static String readNonEmptyString(String message) {
         while (true) {
             System.out.print(message);
@@ -204,6 +237,9 @@ public class Main {
         }
     }
 
+    /**
+     * Зчитує ціле число.
+     */
     private static int readInt(String message) {
         while (true) {
             System.out.print(message);
@@ -222,6 +258,9 @@ public class Main {
         }
     }
 
+    /**
+     * Зчитує число типу double.
+     */
     private static double readDouble(String message) {
         while (true) {
             System.out.print(message);
@@ -240,6 +279,9 @@ public class Main {
         }
     }
 
+    /**
+     * Зчитує жанр книги.
+     */
     private static Genre readGenre() {
         while (true) {
             System.out.println("Оберіть жанр:");
