@@ -114,7 +114,11 @@ public class Main {
             System.out.println("Помилка: " + e.getMessage());
         }
     }
-
+/**
+ * Демонструє поліморфізм: об'єкти різних підкласів
+ * зберігаються в одній колекції ArrayList<Book>
+ * і виводяться через посилання на базовий тип.
+ */
     private static void printAllBooks() {
         if (books.isEmpty()) {
             System.out.println("Список книг порожній.");
