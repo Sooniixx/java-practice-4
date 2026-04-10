@@ -2,16 +2,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Драйвер програми для демонстрації ієрархії класів,
- * поліморфізму, роботи з файлами та пошуку у колекції.
+ * Драйвер програми для роботи з бібліотекою.
  */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final ArrayList<Book> books = new ArrayList<Book>();
+    private static final Library library = new Library("My Library");
 
     public static void main(String[] args) {
 
-        books.addAll(FileService.loadFromFile("input.txt"));
+        FileService.loadFromFile("input.txt", library);
 
         printHeader();
 
@@ -29,11 +28,11 @@ public class Main {
                     createObjectMenu();
                     break;
                 case 3:
-                    printAllBooks();
+                    library.printAllItems();
                     break;
                 case 4:
                     System.out.println("Роботу завершено.");
-                    FileService.saveToFile(books, "input.txt");
+                    FileService.saveToFile(library, "input.txt");
                     running = false;
                     break;
                 default:
@@ -44,18 +43,12 @@ public class Main {
         scanner.close();
     }
 
-    /**
-     * Інформаційна шапка програми.
-     */
     private static void printHeader() {
-        System.out.println("Практична робота №10");
-        System.out.println("Тема: пошук у колекціях");
-        System.out.println("Предметна область: Book hierarchy");
+        System.out.println("Практична робота №11");
+        System.out.println("Тема: колекції, агрегація, класи-обгортки");
+        System.out.println("Предметна область: бібліотека");
     }
 
-    /**
-     * Головне меню.
-     */
     private static void printMainMenu() {
         System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
         System.out.println("1. Пошук об'єкта");
@@ -64,9 +57,6 @@ public class Main {
         System.out.println("4. Завершити роботу");
     }
 
-    /**
-     * Підменю пошуку.
-     */
     private static void searchMenu() {
         boolean back = false;
 
@@ -75,8 +65,7 @@ public class Main {
             System.out.println("1. Пошук за автором");
             System.out.println("2. Пошук за жанром");
             System.out.println("3. Пошук за роком видання");
-            System.out.println("4. Пошук за типом об'єкта");
-            System.out.println("5. Повернутися до головного меню");
+            System.out.println("4. Повернутися до головного меню");
 
             int choice = readInt("Оберіть критерій пошуку: ");
 
@@ -91,132 +80,43 @@ public class Main {
                     searchByYear();
                     break;
                 case 4:
-                    searchByType();
-                    break;
-                case 5:
                     back = true;
                     break;
                 default:
-                    System.out.println("Невірний вибір. Спробуйте ще раз.");
+                    System.out.println("Невірний вибір.");
             }
         }
     }
 
-    /**
-     * Пошук за автором.
-     */
     private static void searchByAuthor() {
-        String author = readNonEmptyString("Введіть автора для пошуку: ");
-        ArrayList<Book> results = new ArrayList<Book>();
-
-        for (Book book : books) {
-            if (book.getAuthor().equalsIgnoreCase(author)) {
-                results.add(book);
-            }
-        }
-
+        String author = readNonEmptyString("Введіть автора: ");
+        ArrayList<LibraryItem> results = library.searchByAuthor(author);
         printSearchResults(results);
     }
 
-    /**
-     * Пошук за жанром.
-     */
     private static void searchByGenre() {
         Genre genre = readGenre();
-        ArrayList<Book> results = new ArrayList<Book>();
-
-        for (Book book : books) {
-            if (book.getGenre() == genre) {
-                results.add(book);
-            }
-        }
-
+        ArrayList<LibraryItem> results = library.searchByGenre(genre);
         printSearchResults(results);
     }
 
-    /**
-     * Пошук за роком видання.
-     */
     private static void searchByYear() {
-        int year = readInt("Введіть рік для пошуку: ");
-        ArrayList<Book> results = new ArrayList<Book>();
-
-        for (Book book : books) {
-            if (book.getYear() == year) {
-                results.add(book);
-            }
-        }
-
+        int year = readInt("Введіть рік: ");
+        ArrayList<LibraryItem> results = library.searchByYear(year);
         printSearchResults(results);
     }
 
-    /**
-     * Пошук за типом об'єкта.
-     */
-    private static void searchByType() {
-        System.out.println("1. Book");
-        System.out.println("2. EBook");
-        System.out.println("3. PaperBook");
-        System.out.println("4. AudioBook");
-        System.out.println("5. Textbook");
-
-        int choice = readInt("Оберіть тип для пошуку: ");
-        ArrayList<Book> results = new ArrayList<Book>();
-
-        for (Book book : books) {
-            switch (choice) {
-                case 1:
-                    if (book.getClass() == Book.class) {
-                        results.add(book);
-                    }
-                    break;
-                case 2:
-                    if (book instanceof EBook && !(book instanceof AudioBook)) {
-                        results.add(book);
-                    }
-                    break;
-                case 3:
-                    if (book instanceof PaperBook && !(book instanceof Textbook)) {
-                        results.add(book);
-                    }
-                    break;
-                case 4:
-                    if (book instanceof AudioBook) {
-                        results.add(book);
-                    }
-                    break;
-                case 5:
-                    if (book instanceof Textbook) {
-                        results.add(book);
-                    }
-                    break;
-                default:
-                    System.out.println("Невірний вибір типу.");
-                    return;
-            }
-        }
-
-        printSearchResults(results);
-    }
-
-    /**
-     * Виводить результати пошуку.
-     */
-    private static void printSearchResults(ArrayList<Book> results) {
+    private static void printSearchResults(ArrayList<LibraryItem> results) {
         if (results.isEmpty()) {
             System.out.println("Нічого не знайдено.");
             return;
         }
 
-        System.out.println("\n=== РЕЗУЛЬТАТИ ПОШУКУ ===");
-        for (Book book : results) {
-            System.out.println(book);
+        for (LibraryItem item : results) {
+            System.out.println(item);
         }
     }
 
-    /**
-     * Підменю створення об'єктів.
-     */
     private static void createObjectMenu() {
         boolean back = false;
 
@@ -264,8 +164,9 @@ public class Main {
             double price = readDouble("Ціна: ");
             int pages = readInt("Сторінки: ");
             Genre genre = readGenre();
+            int quantity = readInt("Кількість: ");
 
-            books.add(new Book(title, author, year, price, pages, genre));
+            library.addNewBook(new Book(title, author, year, price, pages, genre), quantity);
             System.out.println("Додано Book");
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
@@ -282,8 +183,9 @@ public class Main {
             Genre genre = readGenre();
             double size = readDouble("Розмір файлу: ");
             String format = readNonEmptyString("Формат: ");
+            int quantity = readInt("Кількість: ");
 
-            books.add(new EBook(title, author, year, price, pages, genre, size, format));
+            library.addNewBook(new EBook(title, author, year, price, pages, genre, size, format), quantity);
             System.out.println("Додано EBook");
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
@@ -300,8 +202,9 @@ public class Main {
             Genre genre = readGenre();
             String cover = readNonEmptyString("Обкладинка: ");
             double weight = readDouble("Вага: ");
+            int quantity = readInt("Кількість: ");
 
-            books.add(new PaperBook(title, author, year, price, pages, genre, cover, weight));
+            library.addNewBook(new PaperBook(title, author, year, price, pages, genre, cover, weight), quantity);
             System.out.println("Додано PaperBook");
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
@@ -320,9 +223,10 @@ public class Main {
             String format = readNonEmptyString("Формат: ");
             double duration = readDouble("Тривалість: ");
             String narrator = readNonEmptyString("Диктор: ");
+            int quantity = readInt("Кількість: ");
 
-            books.add(new AudioBook(title, author, year, price, pages, genre,
-                    size, format, duration, narrator));
+            library.addNewBook(new AudioBook(title, author, year, price, pages, genre,
+                    size, format, duration, narrator), quantity);
             System.out.println("Додано AudioBook");
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
@@ -341,23 +245,13 @@ public class Main {
             double weight = readDouble("Вага: ");
             String subject = readNonEmptyString("Предмет: ");
             int grade = readInt("Клас: ");
+            int quantity = readInt("Кількість: ");
 
-            books.add(new Textbook(title, author, year, price, pages, genre,
-                    cover, weight, subject, grade));
+            library.addNewBook(new Textbook(title, author, year, price, pages, genre,
+                    cover, weight, subject, grade), quantity);
             System.out.println("Додано Textbook");
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
-        }
-    }
-
-    private static void printAllBooks() {
-        if (books.isEmpty()) {
-            System.out.println("Список порожній.");
-            return;
-        }
-
-        for (Book b : books) {
-            System.out.println(b);
         }
     }
 
