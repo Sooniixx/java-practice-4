@@ -138,14 +138,65 @@ public class Main {
      * Пошук за роком видання.
      */
     private static void searchByYear() {
-        System.out.println("Пошук за роком буде реалізовано далі.");
+        int year = readInt("Введіть рік для пошуку: ");
+        ArrayList<Book> results = new ArrayList<Book>();
+
+        for (Book book : books) {
+            if (book.getYear() == year) {
+                results.add(book);
+            }
+        }
+
+        printSearchResults(results);
     }
 
     /**
      * Пошук за типом об'єкта.
      */
     private static void searchByType() {
-        System.out.println("Пошук за типом буде реалізовано далі.");
+        System.out.println("1. Book");
+        System.out.println("2. EBook");
+        System.out.println("3. PaperBook");
+        System.out.println("4. AudioBook");
+        System.out.println("5. Textbook");
+
+        int choice = readInt("Оберіть тип для пошуку: ");
+        ArrayList<Book> results = new ArrayList<Book>();
+
+        for (Book book : books) {
+            switch (choice) {
+                case 1:
+                    if (book.getClass() == Book.class) {
+                        results.add(book);
+                    }
+                    break;
+                case 2:
+                    if (book instanceof EBook && !(book instanceof AudioBook)) {
+                        results.add(book);
+                    }
+                    break;
+                case 3:
+                    if (book instanceof PaperBook && !(book instanceof Textbook)) {
+                        results.add(book);
+                    }
+                    break;
+                case 4:
+                    if (book instanceof AudioBook) {
+                        results.add(book);
+                    }
+                    break;
+                case 5:
+                    if (book instanceof Textbook) {
+                        results.add(book);
+                    }
+                    break;
+                default:
+                    System.out.println("Невірний вибір типу.");
+                    return;
+            }
+        }
+
+        printSearchResults(results);
     }
 
     /**
