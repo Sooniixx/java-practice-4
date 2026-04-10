@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Клас для роботи з файлами.
@@ -7,11 +6,9 @@ import java.util.ArrayList;
 public class FileService {
 
     /**
-     * Завантажує об'єкти з файлу.
+     * Завантажує об'єкти з файлу в бібліотеку.
      */
-    public static ArrayList<Book> loadFromFile(String fileName) {
-        ArrayList<Book> list = new ArrayList<>();
-
+    public static void loadFromFile(String fileName, Library library) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
 
@@ -20,46 +17,50 @@ public class FileService {
                     String[] parts = line.split(";");
 
                     String type = parts[0];
+                    int quantity = Integer.parseInt(parts[1]);
 
-                    String title = parts[1];
-                    String author = parts[2];
-                    int year = Integer.parseInt(parts[3]);
-                    double price = Double.parseDouble(parts[4]);
-                    int pages = Integer.parseInt(parts[5]);
-                    Genre genre = Genre.valueOf(parts[6]);
+                    String title = parts[2];
+                    String author = parts[3];
+                    int year = Integer.parseInt(parts[4]);
+                    double price = Double.parseDouble(parts[5]);
+                    int pages = Integer.parseInt(parts[6]);
+                    Genre genre = Genre.valueOf(parts[7]);
 
                     switch (type) {
                         case "BOOK":
-                            list.add(new Book(title, author, year, price, pages, genre));
+                            library.addNewBook(new Book(title, author, year, price, pages, genre), quantity);
                             break;
 
                         case "EBOOK":
-                            double fileSize = Double.parseDouble(parts[7]);
-                            String format = parts[8];
-                            list.add(new EBook(title, author, year, price, pages, genre, fileSize, format));
+                            double fileSize = Double.parseDouble(parts[8]);
+                            String format = parts[9];
+                            library.addNewBook(new EBook(title, author, year, price, pages, genre, fileSize, format), quantity);
                             break;
 
                         case "PAPERBOOK":
-                            String cover = parts[7];
-                            double weight = Double.parseDouble(parts[8]);
-                            list.add(new PaperBook(title, author, year, price, pages, genre, cover, weight));
+                            String cover = parts[8];
+                            double weight = Double.parseDouble(parts[9]);
+                            library.addNewBook(new PaperBook(title, author, year, price, pages, genre, cover, weight), quantity);
                             break;
 
                         case "AUDIOBOOK":
-                            double fs = Double.parseDouble(parts[7]);
-                            String fmt = parts[8];
-                            double duration = Double.parseDouble(parts[9]);
-                            String narrator = parts[10];
-                            list.add(new AudioBook(title, author, year, price, pages, genre, fs, fmt, duration, narrator));
+                            double fs = Double.parseDouble(parts[8]);
+                            String fmt = parts[9];
+                            double duration = Double.parseDouble(parts[10]);
+                            String narrator = parts[11];
+                            library.addNewBook(new AudioBook(title, author, year, price, pages, genre, fs, fmt, duration, narrator), quantity);
                             break;
 
                         case "TEXTBOOK":
-                            String coverT = parts[7];
-                            double weightT = Double.parseDouble(parts[8]);
-                            String subject = parts[9];
-                            int grade = Integer.parseInt(parts[10]);
-                            list.add(new Textbook(title, author, year, price, pages, genre, coverT, weightT, subject, grade));
+                            String coverT = parts[8];
+                            double weightT = Double.parseDouble(parts[9]);
+                            String subject = parts[10];
+                            int grade = Integer.parseInt(parts[11]);
+                            library.addNewBook(new Textbook(title, author, year, price, pages, genre, coverT, weightT, subject, grade), quantity);
                             break;
+
+                        default:
+                            System.out.println("Невідомий тип об'єкта: " + type);
                     }
 
                 } catch (Exception e) {
@@ -70,18 +71,16 @@ public class FileService {
         } catch (IOException e) {
             System.out.println("Помилка читання файлу: " + e.getMessage());
         }
-
-        return list;
     }
 
     /**
-     * Зберігає об'єкти у файл.
+     * Зберігає бібліотеку у файл.
      */
-    public static void saveToFile(ArrayList<Book> list, String fileName) {
+    public static void saveToFile(Library library, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 
-            for (Book b : list) {
-                writer.write(serialize(b));
+            for (LibraryItem item : library.getItems()) {
+                writer.write(serialize(item));
                 writer.newLine();
             }
 
@@ -93,11 +92,13 @@ public class FileService {
     /**
      * Перетворює об'єкт у рядок.
      */
-    private static String serialize(Book b) {
+    private static String serialize(LibraryItem item) {
+        Book b = item.getBook();
+        int quantity = item.getQuantity();
 
         if (b instanceof AudioBook) {
             AudioBook a = (AudioBook) b;
-            return "AUDIOBOOK;" + a.getTitle() + ";" + a.getAuthor() + ";" + a.getYear() + ";" +
+            return "AUDIOBOOK;" + quantity + ";" + a.getTitle() + ";" + a.getAuthor() + ";" + a.getYear() + ";" +
                     a.getPrice() + ";" + a.getPages() + ";" + a.getGenre() + ";" +
                     a.getFileSizeMb() + ";" + a.getFileFormat() + ";" +
                     a.getDurationHours() + ";" + a.getNarrator();
@@ -105,7 +106,7 @@ public class FileService {
 
         if (b instanceof Textbook) {
             Textbook t = (Textbook) b;
-            return "TEXTBOOK;" + t.getTitle() + ";" + t.getAuthor() + ";" + t.getYear() + ";" +
+            return "TEXTBOOK;" + quantity + ";" + t.getTitle() + ";" + t.getAuthor() + ";" + t.getYear() + ";" +
                     t.getPrice() + ";" + t.getPages() + ";" + t.getGenre() + ";" +
                     t.getCoverType() + ";" + t.getWeight() + ";" +
                     t.getSubject() + ";" + t.getGradeLevel();
@@ -113,19 +114,19 @@ public class FileService {
 
         if (b instanceof EBook) {
             EBook e = (EBook) b;
-            return "EBOOK;" + e.getTitle() + ";" + e.getAuthor() + ";" + e.getYear() + ";" +
+            return "EBOOK;" + quantity + ";" + e.getTitle() + ";" + e.getAuthor() + ";" + e.getYear() + ";" +
                     e.getPrice() + ";" + e.getPages() + ";" + e.getGenre() + ";" +
                     e.getFileSizeMb() + ";" + e.getFileFormat();
         }
 
         if (b instanceof PaperBook) {
             PaperBook p = (PaperBook) b;
-            return "PAPERBOOK;" + p.getTitle() + ";" + p.getAuthor() + ";" + p.getYear() + ";" +
+            return "PAPERBOOK;" + quantity + ";" + p.getTitle() + ";" + p.getAuthor() + ";" + p.getYear() + ";" +
                     p.getPrice() + ";" + p.getPages() + ";" + p.getGenre() + ";" +
                     p.getCoverType() + ";" + p.getWeight();
         }
 
-        return "BOOK;" + b.getTitle() + ";" + b.getAuthor() + ";" + b.getYear() + ";" +
+        return "BOOK;" + quantity + ";" + b.getTitle() + ";" + b.getAuthor() + ";" + b.getYear() + ";" +
                 b.getPrice() + ";" + b.getPages() + ";" + b.getGenre();
     }
 }
