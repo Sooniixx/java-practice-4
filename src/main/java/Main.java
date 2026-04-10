@@ -106,14 +106,32 @@ public class Main {
      * Пошук за автором.
      */
     private static void searchByAuthor() {
-        System.out.println("Пошук за автором буде реалізовано далі.");
+        String author = readNonEmptyString("Введіть автора для пошуку: ");
+        ArrayList<Book> results = new ArrayList<Book>();
+
+        for (Book book : books) {
+            if (book.getAuthor().equalsIgnoreCase(author)) {
+                results.add(book);
+            }
+        }
+
+        printSearchResults(results);
     }
 
     /**
      * Пошук за жанром.
      */
     private static void searchByGenre() {
-        System.out.println("Пошук за жанром буде реалізовано далі.");
+        Genre genre = readGenre();
+        ArrayList<Book> results = new ArrayList<Book>();
+
+        for (Book book : books) {
+            if (book.getGenre() == genre) {
+                results.add(book);
+            }
+        }
+
+        printSearchResults(results);
     }
 
     /**
@@ -128,6 +146,21 @@ public class Main {
      */
     private static void searchByType() {
         System.out.println("Пошук за типом буде реалізовано далі.");
+    }
+
+    /**
+     * Виводить результати пошуку.
+     */
+    private static void printSearchResults(ArrayList<Book> results) {
+        if (results.isEmpty()) {
+            System.out.println("Нічого не знайдено.");
+            return;
+        }
+
+        System.out.println("\n=== РЕЗУЛЬТАТИ ПОШУКУ ===");
+        for (Book book : results) {
+            System.out.println(book);
+        }
     }
 
     /**
