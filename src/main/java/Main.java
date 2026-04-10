@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 /**
  * Драйвер програми для демонстрації ієрархії класів,
- * поліморфізму та роботи з файлами.
+ * поліморфізму, роботи з файлами та пошуку у колекції.
  */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
@@ -11,7 +11,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // 🔥 ЗАВАНТАЖЕННЯ З ФАЙЛУ
         books.addAll(FileService.loadFromFile("input.txt"));
 
         printHeader();
@@ -24,17 +23,17 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    createObjectMenu();
+                    searchMenu();
                     break;
                 case 2:
-                    printAllBooks();
+                    createObjectMenu();
                     break;
                 case 3:
+                    printAllBooks();
+                    break;
+                case 4:
                     System.out.println("Роботу завершено.");
-
-                    // 🔥 ЗБЕРЕЖЕННЯ У ФАЙЛ
                     FileService.saveToFile(books, "input.txt");
-
                     running = false;
                     break;
                 default:
@@ -49,8 +48,8 @@ public class Main {
      * Інформаційна шапка програми.
      */
     private static void printHeader() {
-        System.out.println("Практична робота №9");
-        System.out.println("Тема: робота з файлами, ієрархія класів");
+        System.out.println("Практична робота №10");
+        System.out.println("Тема: пошук у колекціях");
         System.out.println("Предметна область: Book hierarchy");
     }
 
@@ -59,9 +58,76 @@ public class Main {
      */
     private static void printMainMenu() {
         System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
-        System.out.println("1. Створити новий об'єкт");
-        System.out.println("2. Вивести всі об'єкти");
-        System.out.println("3. Завершити роботу");
+        System.out.println("1. Пошук об'єкта");
+        System.out.println("2. Створити новий об'єкт");
+        System.out.println("3. Вивести інформацію про всі об'єкти");
+        System.out.println("4. Завершити роботу");
+    }
+
+    /**
+     * Підменю пошуку.
+     */
+    private static void searchMenu() {
+        boolean back = false;
+
+        while (!back) {
+            System.out.println("\n=== ПОШУК ===");
+            System.out.println("1. Пошук за автором");
+            System.out.println("2. Пошук за жанром");
+            System.out.println("3. Пошук за роком видання");
+            System.out.println("4. Пошук за типом об'єкта");
+            System.out.println("5. Повернутися до головного меню");
+
+            int choice = readInt("Оберіть критерій пошуку: ");
+
+            switch (choice) {
+                case 1:
+                    searchByAuthor();
+                    break;
+                case 2:
+                    searchByGenre();
+                    break;
+                case 3:
+                    searchByYear();
+                    break;
+                case 4:
+                    searchByType();
+                    break;
+                case 5:
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Невірний вибір. Спробуйте ще раз.");
+            }
+        }
+    }
+
+    /**
+     * Пошук за автором.
+     */
+    private static void searchByAuthor() {
+        System.out.println("Пошук за автором буде реалізовано далі.");
+    }
+
+    /**
+     * Пошук за жанром.
+     */
+    private static void searchByGenre() {
+        System.out.println("Пошук за жанром буде реалізовано далі.");
+    }
+
+    /**
+     * Пошук за роком видання.
+     */
+    private static void searchByYear() {
+        System.out.println("Пошук за роком буде реалізовано далі.");
+    }
+
+    /**
+     * Пошук за типом об'єкта.
+     */
+    private static void searchByType() {
+        System.out.println("Пошук за типом буде реалізовано далі.");
     }
 
     /**
@@ -215,7 +281,9 @@ public class Main {
         while (true) {
             System.out.print(msg);
             String input = scanner.nextLine().trim();
-            if (!input.isEmpty()) return input;
+            if (!input.isEmpty()) {
+                return input;
+            }
             System.out.println("Порожній рядок!");
         }
     }
@@ -224,7 +292,12 @@ public class Main {
         while (true) {
             try {
                 System.out.print(msg);
-                return Integer.parseInt(scanner.nextLine());
+                int value = Integer.parseInt(scanner.nextLine());
+                if (value < 0) {
+                    System.out.println("Від'ємні значення не допускаються!");
+                    continue;
+                }
+                return value;
             } catch (Exception e) {
                 System.out.println("Невірне число!");
             }
@@ -235,7 +308,12 @@ public class Main {
         while (true) {
             try {
                 System.out.print(msg);
-                return Double.parseDouble(scanner.nextLine());
+                double value = Double.parseDouble(scanner.nextLine());
+                if (value < 0) {
+                    System.out.println("Від'ємні значення не допускаються!");
+                    continue;
+                }
+                return value;
             } catch (Exception e) {
                 System.out.println("Невірне число!");
             }
@@ -249,7 +327,12 @@ public class Main {
             System.out.println((i + 1) + ". " + values[i]);
         }
 
-        int choice = readInt("Жанр: ");
-        return values[choice - 1];
+        while (true) {
+            int choice = readInt("Жанр: ");
+            if (choice >= 1 && choice <= values.length) {
+                return values[choice - 1];
+            }
+            System.out.println("Невірний вибір жанру!");
+        }
     }
 }
