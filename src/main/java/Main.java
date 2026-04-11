@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,8 +9,21 @@ import java.util.Scanner;
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Library library = new Library("My Library");
+    private static DatabaseManager databaseManager;
 
     public static void main(String[] args) {
+
+        if (args.length == 0) {
+            System.out.println("Не передано шлях до конфігураційного файлу.");
+            return;
+        }
+
+        try {
+            databaseManager = new DatabaseManager(args[0]);
+        } catch (IOException e) {
+            System.out.println("Помилка читання конфігурації: " + e.getMessage());
+            return;
+        }
 
         FileService.loadFromFile("input.txt", library);
 
@@ -44,8 +59,8 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Практична робота №11");
-        System.out.println("Тема: колекції, агрегація, класи-обгортки");
+        System.out.println("Практична робота №12");
+        System.out.println("Тема: JDBC, збереження в базі даних");
         System.out.println("Предметна область: бібліотека");
     }
 
@@ -166,8 +181,15 @@ public class Main {
             Genre genre = readGenre();
             int quantity = readInt("Кількість: ");
 
-            library.addNewBook(new Book(title, author, year, price, pages, genre), quantity);
-            System.out.println("Додано Book");
+            Book book = new Book(title, author, year, price, pages, genre);
+            library.addNewBook(book, quantity);
+
+            try {
+                databaseManager.insertBook(book, quantity);
+                System.out.println("Додано Book та збережено в БД");
+            } catch (SQLException e) {
+                System.out.println("Помилка збереження в БД: " + e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
         }
@@ -185,8 +207,15 @@ public class Main {
             String format = readNonEmptyString("Формат: ");
             int quantity = readInt("Кількість: ");
 
-            library.addNewBook(new EBook(title, author, year, price, pages, genre, size, format), quantity);
-            System.out.println("Додано EBook");
+            Book book = new EBook(title, author, year, price, pages, genre, size, format);
+            library.addNewBook(book, quantity);
+
+            try {
+                databaseManager.insertBook(book, quantity);
+                System.out.println("Додано EBook та збережено в БД");
+            } catch (SQLException e) {
+                System.out.println("Помилка збереження в БД: " + e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
         }
@@ -204,8 +233,15 @@ public class Main {
             double weight = readDouble("Вага: ");
             int quantity = readInt("Кількість: ");
 
-            library.addNewBook(new PaperBook(title, author, year, price, pages, genre, cover, weight), quantity);
-            System.out.println("Додано PaperBook");
+            Book book = new PaperBook(title, author, year, price, pages, genre, cover, weight);
+            library.addNewBook(book, quantity);
+
+            try {
+                databaseManager.insertBook(book, quantity);
+                System.out.println("Додано PaperBook та збережено в БД");
+            } catch (SQLException e) {
+                System.out.println("Помилка збереження в БД: " + e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
         }
@@ -225,9 +261,16 @@ public class Main {
             String narrator = readNonEmptyString("Диктор: ");
             int quantity = readInt("Кількість: ");
 
-            library.addNewBook(new AudioBook(title, author, year, price, pages, genre,
-                    size, format, duration, narrator), quantity);
-            System.out.println("Додано AudioBook");
+            Book book = new AudioBook(title, author, year, price, pages, genre,
+                    size, format, duration, narrator);
+            library.addNewBook(book, quantity);
+
+            try {
+                databaseManager.insertBook(book, quantity);
+                System.out.println("Додано AudioBook та збережено в БД");
+            } catch (SQLException e) {
+                System.out.println("Помилка збереження в БД: " + e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
         }
@@ -247,9 +290,16 @@ public class Main {
             int grade = readInt("Клас: ");
             int quantity = readInt("Кількість: ");
 
-            library.addNewBook(new Textbook(title, author, year, price, pages, genre,
-                    cover, weight, subject, grade), quantity);
-            System.out.println("Додано Textbook");
+            Book book = new Textbook(title, author, year, price, pages, genre,
+                    cover, weight, subject, grade);
+            library.addNewBook(book, quantity);
+
+            try {
+                databaseManager.insertBook(book, quantity);
+                System.out.println("Додано Textbook та збережено в БД");
+            } catch (SQLException e) {
+                System.out.println("Помилка збереження в БД: " + e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Помилка: " + e.getMessage());
         }
