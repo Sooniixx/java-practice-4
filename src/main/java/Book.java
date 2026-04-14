@@ -1,6 +1,9 @@
 import java.util.Objects;
 
-public class Book {
+/**
+ * Абстрактний базовий клас Book описує книгу.
+ */
+public abstract class Book implements Comparable<Book> {
     private String title;
     private String author;
     private int year;
@@ -8,6 +11,16 @@ public class Book {
     private int pages;
     private Genre genre;
 
+    /**
+     * Конструктор з параметрами.
+     *
+     * @param title назва книги
+     * @param author автор
+     * @param year рік видання
+     * @param price ціна
+     * @param pages кількість сторінок
+     * @param genre жанр
+     */
     public Book(String title, String author, int year, double price, int pages, Genre genre) {
         setTitle(title);
         setAuthor(author);
@@ -17,6 +30,11 @@ public class Book {
         setGenre(genre);
     }
 
+    /**
+     * Конструктор копіювання.
+     *
+     * @param other інший об'єкт Book
+     */
     public Book(Book other) {
         if (other == null) {
             throw new IllegalArgumentException("Об'єкт для копіювання не може бути null.");
@@ -96,6 +114,23 @@ public class Book {
         this.genre = genre;
     }
 
+    /**
+     * Порівнює книги за назвою, а якщо назви однакові — за автором.
+     *
+     * @param other інша книга
+     * @return результат порівняння
+     */
+    @Override
+    public int compareTo(Book other) {
+        int titleCompare = this.title.compareToIgnoreCase(other.title);
+
+        if (titleCompare != 0) {
+            return titleCompare;
+        }
+
+        return this.author.compareToIgnoreCase(other.author);
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -119,5 +154,10 @@ public class Book {
                 Objects.equals(title, book.title) &&
                 Objects.equals(author, book.author) &&
                 genre == book.genre;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, author, year, price, pages, genre);
     }
 }
