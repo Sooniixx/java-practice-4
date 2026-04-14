@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
 /**
  * Клас Library зберігає колекцію книг з інформацією про кількість.
@@ -82,6 +83,22 @@ public class Library {
         return results;
     }
 
+    /**
+     * Пошук за UUID.
+     *
+     * @param uuid UUID книги
+     * @return знайдений елемент або null
+     */
+    public LibraryItem searchByUuid(UUID uuid) {
+        for (LibraryItem item : items) {
+            if (item.getBook().getUuid().equals(uuid)) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
     public void printAllItems() {
         if (items.isEmpty()) {
             System.out.println("Бібліотека порожня.");
@@ -93,9 +110,6 @@ public class Library {
         }
     }
 
-    /**
-     * Сортування за назвою.
-     */
     public void printSortedByTitle() {
         if (items.isEmpty()) {
             System.out.println("Бібліотека порожня.");
@@ -112,9 +126,6 @@ public class Library {
         }
     }
 
-    /**
-     * Сортування за автором.
-     */
     public void printSortedByAuthor() {
         if (items.isEmpty()) {
             System.out.println("Бібліотека порожня.");
@@ -131,9 +142,6 @@ public class Library {
         }
     }
 
-    /**
-     * Сортування за роком видання.
-     */
     public void printSortedByYear() {
         if (items.isEmpty()) {
             System.out.println("Бібліотека порожня.");
@@ -148,5 +156,20 @@ public class Library {
         for (LibraryItem item : sortedItems) {
             System.out.println(item);
         }
+    }
+
+    /**
+     * Короткий список для GUI.
+     *
+     * @return список рядків
+     */
+    public ArrayList<String> getShortViewList() {
+        ArrayList<String> result = new ArrayList<String>();
+
+        for (LibraryItem item : items) {
+            result.add(item.getBook().getTitle() + " | UUID: " + item.getBook().getUuid());
+        }
+
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.UUID;
 
 /**
  * Драйвер програми для роботи з бібліотекою.
@@ -46,18 +47,12 @@ public class Main {
         scanner.close();
     }
 
-    /**
-     * Інформаційна шапка програми.
-     */
     private static void printHeader() {
-        System.out.println("Лабораторна робота №15");
-        System.out.println("Тема: Lambda expressions");
+        System.out.println("Лабораторна робота №16");
+        System.out.println("Тема: UUID + JavaFX GUI");
         System.out.println("Предметна область: бібліотека");
     }
 
-    /**
-     * Головне меню.
-     */
     private static void printMainMenu() {
         System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
         System.out.println("1. Пошук об'єкта");
@@ -67,9 +62,6 @@ public class Main {
         System.out.println("5. Завершити роботу");
     }
 
-    /**
-     * Підменю сортування.
-     */
     private static void sortMenu() {
         boolean back = false;
 
@@ -101,9 +93,6 @@ public class Main {
         }
     }
 
-    /**
-     * Підменю пошуку.
-     */
     private static void searchMenu() {
         boolean back = false;
 
@@ -112,7 +101,8 @@ public class Main {
             System.out.println("1. Пошук за автором");
             System.out.println("2. Пошук за жанром");
             System.out.println("3. Пошук за роком видання");
-            System.out.println("4. Повернутися до головного меню");
+            System.out.println("4. Пошук за UUID");
+            System.out.println("0. Повернутися до головного меню");
 
             int choice = readInt("Оберіть критерій пошуку: ");
 
@@ -127,6 +117,9 @@ public class Main {
                     searchByYear();
                     break;
                 case 4:
+                    searchByUuid();
+                    break;
+                case 0:
                     back = true;
                     break;
                 default:
@@ -135,36 +128,42 @@ public class Main {
         }
     }
 
-    /**
-     * Пошук за автором.
-     */
     private static void searchByAuthor() {
         String author = readNonEmptyString("Введіть автора: ");
         ArrayList<LibraryItem> results = library.searchByAuthor(author);
         printSearchResults(results);
     }
 
-    /**
-     * Пошук за жанром.
-     */
     private static void searchByGenre() {
         Genre genre = readGenre();
         ArrayList<LibraryItem> results = library.searchByGenre(genre);
         printSearchResults(results);
     }
 
-    /**
-     * Пошук за роком.
-     */
     private static void searchByYear() {
         int year = readInt("Введіть рік: ");
         ArrayList<LibraryItem> results = library.searchByYear(year);
         printSearchResults(results);
     }
 
-    /**
-     * Вивід результатів пошуку.
-     */
+    private static void searchByUuid() {
+        System.out.print("Введіть UUID: ");
+        String input = scanner.nextLine().trim();
+
+        try {
+            UUID uuid = UUID.fromString(input);
+            LibraryItem item = library.searchByUuid(uuid);
+
+            if (item == null) {
+                System.out.println("Не знайдено.");
+            } else {
+                System.out.println(item);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Некоректний формат UUID.");
+        }
+    }
+
     private static void printSearchResults(ArrayList<LibraryItem> results) {
         if (results.isEmpty()) {
             System.out.println("Нічого не знайдено.");
@@ -176,9 +175,6 @@ public class Main {
         }
     }
 
-    /**
-     * Підменю створення об'єктів.
-     */
     private static void createObjectMenu() {
         boolean back = false;
 
