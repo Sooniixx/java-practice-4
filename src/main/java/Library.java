@@ -115,4 +115,26 @@ public class Library {
             System.out.println(item);
         }
     }
+    /**
+ * Виводить відсортовані елементи бібліотеки.
+ */
+public void printSortedItems() {
+    if (items.isEmpty()) {
+        System.out.println("Бібліотека порожня.");
+        return;
+    }
+
+    ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
+
+    sortedItems.sort(new java.util.Comparator<LibraryItem>() {
+        @Override
+        public int compare(LibraryItem o1, LibraryItem o2) {
+            return o1.getBook().compareTo(o2.getBook());
+        }
+    });
+
+    for (LibraryItem item : sortedItems) {
+        System.out.println(item);
+    }
+}
 }
