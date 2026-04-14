@@ -31,6 +31,9 @@ public class Main {
                     library.printAllItems();
                     break;
                 case 4:
+                    library.printSortedItems();
+                    break;
+                case 5:
                     System.out.println("Роботу завершено.");
                     FileService.saveToFile(library, "input.txt");
                     running = false;
@@ -44,8 +47,8 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Практична робота №11");
-        System.out.println("Тема: колекції, агрегація, класи-обгортки");
+        System.out.println("Практична робота №13");
+        System.out.println("Тема: abstract classes, interfaces, Comparable");
         System.out.println("Предметна область: бібліотека");
     }
 
@@ -54,7 +57,8 @@ public class Main {
         System.out.println("1. Пошук об'єкта");
         System.out.println("2. Створити новий об'єкт");
         System.out.println("3. Вивести інформацію про всі об'єкти");
-        System.out.println("4. Завершити роботу");
+        System.out.println("4. Вивести відсортовану інформацію про всі об'єкти");
+        System.out.println("5. Завершити роботу");
     }
 
     private static void searchMenu() {
@@ -122,54 +126,33 @@ public class Main {
 
         while (!back) {
             System.out.println("\n=== СТВОРЕННЯ ОБ'ЄКТА ===");
-            System.out.println("1. Book");
-            System.out.println("2. EBook");
-            System.out.println("3. PaperBook");
-            System.out.println("4. AudioBook");
-            System.out.println("5. Textbook");
-            System.out.println("6. Назад");
+            System.out.println("1. EBook");
+            System.out.println("2. PaperBook");
+            System.out.println("3. AudioBook");
+            System.out.println("4. Textbook");
+            System.out.println("5. Назад");
 
             int choice = readInt("Ваш вибір: ");
 
             switch (choice) {
                 case 1:
-                    createBook();
-                    break;
-                case 2:
                     createEBook();
                     break;
-                case 3:
+                case 2:
                     createPaperBook();
                     break;
-                case 4:
+                case 3:
                     createAudioBook();
                     break;
-                case 5:
+                case 4:
                     createTextbook();
                     break;
-                case 6:
+                case 5:
                     back = true;
                     break;
                 default:
                     System.out.println("Невірний вибір.");
             }
-        }
-    }
-
-    private static void createBook() {
-        try {
-            String title = readNonEmptyString("Назва: ");
-            String author = readNonEmptyString("Автор: ");
-            int year = readInt("Рік: ");
-            double price = readDouble("Ціна: ");
-            int pages = readInt("Сторінки: ");
-            Genre genre = readGenre();
-            int quantity = readInt("Кількість: ");
-
-            library.addNewBook(new Book(title, author, year, price, pages, genre), quantity);
-            System.out.println("Додано Book");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
         }
     }
 

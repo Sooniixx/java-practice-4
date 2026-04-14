@@ -7,6 +7,9 @@ public class FileService {
 
     /**
      * Завантажує об'єкти з файлу в бібліотеку.
+     *
+     * @param fileName ім'я файлу
+     * @param library бібліотека
      */
     public static void loadFromFile(String fileName, Library library) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -27,10 +30,6 @@ public class FileService {
                     Genre genre = Genre.valueOf(parts[7]);
 
                     switch (type) {
-                        case "BOOK":
-                            library.addNewBook(new Book(title, author, year, price, pages, genre), quantity);
-                            break;
-
                         case "EBOOK":
                             double fileSize = Double.parseDouble(parts[8]);
                             String format = parts[9];
@@ -75,6 +74,9 @@ public class FileService {
 
     /**
      * Зберігає бібліотеку у файл.
+     *
+     * @param library бібліотека
+     * @param fileName ім'я файлу
      */
     public static void saveToFile(Library library, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
@@ -90,7 +92,10 @@ public class FileService {
     }
 
     /**
-     * Перетворює об'єкт у рядок.
+     * Перетворює елемент бібліотеки у рядок.
+     *
+     * @param item елемент бібліотеки
+     * @return рядок для збереження
      */
     private static String serialize(LibraryItem item) {
         Book b = item.getBook();
@@ -126,7 +131,6 @@ public class FileService {
                     p.getCoverType() + ";" + p.getWeight();
         }
 
-        return "BOOK;" + quantity + ";" + b.getTitle() + ";" + b.getAuthor() + ";" + b.getYear() + ";" +
-                b.getPrice() + ";" + b.getPages() + ";" + b.getGenre();
+        return "";
     }
 }
