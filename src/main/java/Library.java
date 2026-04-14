@@ -7,11 +7,6 @@ public class Library {
     private String name;
     private ArrayList<LibraryItem> items;
 
-    /**
-     * Конструктор з параметрами.
-     *
-     * @param name назва бібліотеки
-     */
     public Library(String name) {
         setName(name);
         this.items = new ArrayList<LibraryItem>();
@@ -32,13 +27,6 @@ public class Library {
         return items;
     }
 
-    /**
-     * Додає нову книгу в бібліотеку з урахуванням кількості.
-     * Якщо книга вже існує, збільшує її кількість.
-     *
-     * @param bk книга
-     * @param quantity кількість
-     */
     public void addNewBook(Book bk, int quantity) {
         if (bk == null) {
             throw new IllegalArgumentException("Книга не може бути null.");
@@ -57,9 +45,6 @@ public class Library {
         items.add(new LibraryItem(bk, quantity));
     }
 
-    /**
-     * Пошук за автором.
-     */
     public ArrayList<LibraryItem> searchByAuthor(String author) {
         ArrayList<LibraryItem> results = new ArrayList<LibraryItem>();
 
@@ -72,9 +57,6 @@ public class Library {
         return results;
     }
 
-    /**
-     * Пошук за жанром.
-     */
     public ArrayList<LibraryItem> searchByGenre(Genre genre) {
         ArrayList<LibraryItem> results = new ArrayList<LibraryItem>();
 
@@ -87,9 +69,6 @@ public class Library {
         return results;
     }
 
-    /**
-     * Пошук за роком видання.
-     */
     public ArrayList<LibraryItem> searchByYear(int year) {
         ArrayList<LibraryItem> results = new ArrayList<LibraryItem>();
 
@@ -102,9 +81,6 @@ public class Library {
         return results;
     }
 
-    /**
-     * Виводить усі книги бібліотеки.
-     */
     public void printAllItems() {
         if (items.isEmpty()) {
             System.out.println("Бібліотека порожня.");
@@ -115,26 +91,16 @@ public class Library {
             System.out.println(item);
         }
     }
-    /**
- * Виводить відсортовані елементи бібліотеки.
- */
-public void printSortedItems() {
-    if (items.isEmpty()) {
-        System.out.println("Бібліотека порожня.");
-        return;
+
+    public void printSortedByTitle() {
+        System.out.println("Сортування за назвою буде реалізовано далі.");
     }
 
-    ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
-
-    sortedItems.sort(new java.util.Comparator<LibraryItem>() {
-        @Override
-        public int compare(LibraryItem o1, LibraryItem o2) {
-            return o1.getBook().compareTo(o2.getBook());
-        }
-    });
-
-    for (LibraryItem item : sortedItems) {
-        System.out.println(item);
+    public void printSortedByAuthor() {
+        System.out.println("Сортування за автором буде реалізовано далі.");
     }
-}
+
+    public void printSortedByYear() {
+        System.out.println("Сортування за роком буде реалізовано далі.");
+    }
 }

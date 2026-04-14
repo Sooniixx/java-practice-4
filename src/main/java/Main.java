@@ -31,7 +31,7 @@ public class Main {
                     library.printAllItems();
                     break;
                 case 4:
-                    library.printSortedItems();
+                    sortMenu();
                     break;
                 case 5:
                     System.out.println("Роботу завершено.");
@@ -47,8 +47,8 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Практична робота №13");
-        System.out.println("Тема: abstract classes, interfaces, Comparable");
+        System.out.println("Практична робота №14");
+        System.out.println("Тема: inner classes, interface Comparator");
         System.out.println("Предметна область: бібліотека");
     }
 
@@ -59,6 +59,40 @@ public class Main {
         System.out.println("3. Вивести інформацію про всі об'єкти");
         System.out.println("4. Вивести відсортовану інформацію про всі об'єкти");
         System.out.println("5. Завершити роботу");
+    }
+
+    /**
+     * Підменю сортування.
+     */
+    private static void sortMenu() {
+        boolean back = false;
+
+        while (!back) {
+            System.out.println("\n=== СОРТУВАННЯ ===");
+            System.out.println("1. Сортувати за назвою");
+            System.out.println("2. Сортувати за автором");
+            System.out.println("3. Сортувати за роком видання");
+            System.out.println("0. Повернутися в головне меню");
+
+            int choice = readInt("Оберіть критерій сортування: ");
+
+            switch (choice) {
+                case 1:
+                    library.printSortedByTitle();
+                    break;
+                case 2:
+                    library.printSortedByAuthor();
+                    break;
+                case 3:
+                    library.printSortedByYear();
+                    break;
+                case 0:
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Невірний вибір.");
+            }
+        }
     }
 
     private static void searchMenu() {
