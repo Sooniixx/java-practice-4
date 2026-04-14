@@ -46,12 +46,18 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * Інформаційна шапка програми.
+     */
     private static void printHeader() {
-        System.out.println("Практична робота №14");
-        System.out.println("Тема: inner classes, interface Comparator");
+        System.out.println("Лабораторна робота №15");
+        System.out.println("Тема: Lambda expressions");
         System.out.println("Предметна область: бібліотека");
     }
 
+    /**
+     * Головне меню.
+     */
     private static void printMainMenu() {
         System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
         System.out.println("1. Пошук об'єкта");
@@ -95,6 +101,9 @@ public class Main {
         }
     }
 
+    /**
+     * Підменю пошуку.
+     */
     private static void searchMenu() {
         boolean back = false;
 
@@ -126,24 +135,36 @@ public class Main {
         }
     }
 
+    /**
+     * Пошук за автором.
+     */
     private static void searchByAuthor() {
         String author = readNonEmptyString("Введіть автора: ");
         ArrayList<LibraryItem> results = library.searchByAuthor(author);
         printSearchResults(results);
     }
 
+    /**
+     * Пошук за жанром.
+     */
     private static void searchByGenre() {
         Genre genre = readGenre();
         ArrayList<LibraryItem> results = library.searchByGenre(genre);
         printSearchResults(results);
     }
 
+    /**
+     * Пошук за роком.
+     */
     private static void searchByYear() {
         int year = readInt("Введіть рік: ");
         ArrayList<LibraryItem> results = library.searchByYear(year);
         printSearchResults(results);
     }
 
+    /**
+     * Вивід результатів пошуку.
+     */
     private static void printSearchResults(ArrayList<LibraryItem> results) {
         if (results.isEmpty()) {
             System.out.println("Нічого не знайдено.");
@@ -155,6 +176,9 @@ public class Main {
         }
     }
 
+    /**
+     * Підменю створення об'єктів.
+     */
     private static void createObjectMenu() {
         boolean back = false;
 
@@ -276,9 +300,11 @@ public class Main {
         while (true) {
             System.out.print(msg);
             String input = scanner.nextLine().trim();
+
             if (!input.isEmpty()) {
                 return input;
             }
+
             System.out.println("Порожній рядок!");
         }
     }
@@ -288,10 +314,12 @@ public class Main {
             try {
                 System.out.print(msg);
                 int value = Integer.parseInt(scanner.nextLine());
+
                 if (value < 0) {
                     System.out.println("Від'ємні значення не допускаються!");
                     continue;
                 }
+
                 return value;
             } catch (Exception e) {
                 System.out.println("Невірне число!");
@@ -304,10 +332,12 @@ public class Main {
             try {
                 System.out.print(msg);
                 double value = Double.parseDouble(scanner.nextLine());
+
                 if (value < 0) {
                     System.out.println("Від'ємні значення не допускаються!");
                     continue;
                 }
+
                 return value;
             } catch (Exception e) {
                 System.out.println("Невірне число!");
@@ -324,9 +354,11 @@ public class Main {
 
         while (true) {
             int choice = readInt("Жанр: ");
+
             if (choice >= 1 && choice <= values.length) {
                 return values[choice - 1];
             }
+
             System.out.println("Невірний вибір жанру!");
         }
     }

@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Клас Library зберігає колекцію книг з інформацією про кількість.
@@ -105,12 +104,8 @@ public class Library {
 
         ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
 
-        Collections.sort(sortedItems, new Comparator<LibraryItem>() {
-            @Override
-            public int compare(LibraryItem o1, LibraryItem o2) {
-                return o1.getBook().getTitle().compareToIgnoreCase(o2.getBook().getTitle());
-            }
-        });
+        Collections.sort(sortedItems,
+                (o1, o2) -> o1.getBook().getTitle().compareToIgnoreCase(o2.getBook().getTitle()));
 
         for (LibraryItem item : sortedItems) {
             System.out.println(item);
@@ -128,12 +123,8 @@ public class Library {
 
         ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
 
-        Collections.sort(sortedItems, new Comparator<LibraryItem>() {
-            @Override
-            public int compare(LibraryItem o1, LibraryItem o2) {
-                return o1.getBook().getAuthor().compareToIgnoreCase(o2.getBook().getAuthor());
-            }
-        });
+        Collections.sort(sortedItems,
+                (o1, o2) -> o1.getBook().getAuthor().compareToIgnoreCase(o2.getBook().getAuthor()));
 
         for (LibraryItem item : sortedItems) {
             System.out.println(item);
@@ -151,18 +142,8 @@ public class Library {
 
         ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
 
-        Collections.sort(sortedItems, new Comparator<LibraryItem>() {
-            @Override
-            public int compare(LibraryItem o1, LibraryItem o2) {
-                if (o1.getBook().getYear() < o2.getBook().getYear()) {
-                    return -1;
-                }
-                if (o1.getBook().getYear() > o2.getBook().getYear()) {
-                    return 1;
-                }
-                return 0;
-            }
-        });
+        Collections.sort(sortedItems,
+                (o1, o2) -> Integer.compare(o1.getBook().getYear(), o2.getBook().getYear()));
 
         for (LibraryItem item : sortedItems) {
             System.out.println(item);
