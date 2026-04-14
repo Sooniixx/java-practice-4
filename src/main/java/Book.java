@@ -1,9 +1,11 @@
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Абстрактний базовий клас Book описує книгу.
  */
-public abstract class Book implements Comparable<Book> {
+public abstract class Book implements Comparable<Book>, Identifiable {
+    private UUID uuid;
     private String title;
     private String author;
     private int year;
@@ -22,6 +24,7 @@ public abstract class Book implements Comparable<Book> {
      * @param genre жанр
      */
     public Book(String title, String author, int year, double price, int pages, Genre genre) {
+        this.uuid = UUID.randomUUID();
         setTitle(title);
         setAuthor(author);
         setYear(year);
@@ -40,12 +43,18 @@ public abstract class Book implements Comparable<Book> {
             throw new IllegalArgumentException("Об'єкт для копіювання не може бути null.");
         }
 
+        this.uuid = UUID.randomUUID();
         this.title = other.title;
         this.author = other.author;
         this.year = other.year;
         this.price = other.price;
         this.pages = other.pages;
         this.genre = other.genre;
+    }
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getTitle() {
@@ -134,7 +143,8 @@ public abstract class Book implements Comparable<Book> {
     @Override
     public String toString() {
         return "Book{" +
-                "title='" + title + '\'' +
+                "uuid=" + uuid +
+                ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +
                 ", price=" + price +
