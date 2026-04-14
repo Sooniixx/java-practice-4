@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Клас Library зберігає колекцію книг з інформацією про кількість.
@@ -92,8 +94,27 @@ public class Library {
         }
     }
 
+    /**
+     * Сортування за назвою.
+     */
     public void printSortedByTitle() {
-        System.out.println("Сортування за назвою буде реалізовано далі.");
+        if (items.isEmpty()) {
+            System.out.println("Бібліотека порожня.");
+            return;
+        }
+
+        ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
+
+        Collections.sort(sortedItems, new Comparator<LibraryItem>() {
+            @Override
+            public int compare(LibraryItem o1, LibraryItem o2) {
+                return o1.getBook().getTitle().compareToIgnoreCase(o2.getBook().getTitle());
+            }
+        });
+
+        for (LibraryItem item : sortedItems) {
+            System.out.println(item);
+        }
     }
 
     public void printSortedByAuthor() {
