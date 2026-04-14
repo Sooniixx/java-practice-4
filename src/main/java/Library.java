@@ -117,11 +117,55 @@ public class Library {
         }
     }
 
+    /**
+     * Сортування за автором.
+     */
     public void printSortedByAuthor() {
-        System.out.println("Сортування за автором буде реалізовано далі.");
+        if (items.isEmpty()) {
+            System.out.println("Бібліотека порожня.");
+            return;
+        }
+
+        ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
+
+        Collections.sort(sortedItems, new Comparator<LibraryItem>() {
+            @Override
+            public int compare(LibraryItem o1, LibraryItem o2) {
+                return o1.getBook().getAuthor().compareToIgnoreCase(o2.getBook().getAuthor());
+            }
+        });
+
+        for (LibraryItem item : sortedItems) {
+            System.out.println(item);
+        }
     }
 
+    /**
+     * Сортування за роком видання.
+     */
     public void printSortedByYear() {
-        System.out.println("Сортування за роком буде реалізовано далі.");
+        if (items.isEmpty()) {
+            System.out.println("Бібліотека порожня.");
+            return;
+        }
+
+        ArrayList<LibraryItem> sortedItems = new ArrayList<LibraryItem>(items);
+
+        Collections.sort(sortedItems, new Comparator<LibraryItem>() {
+            @Override
+            public int compare(LibraryItem o1, LibraryItem o2) {
+                if (o1.getBook().getYear() < o2.getBook().getYear()) {
+                    return -1;
+                }
+                if (o1.getBook().getYear() > o2.getBook().getYear()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
+        for (LibraryItem item : sortedItems) {
+            System.out.println(item);
+        }
     }
 }
