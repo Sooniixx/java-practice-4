@@ -54,8 +54,8 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Лабораторна робота №17");
-        System.out.println("Тема: modification and deletion of elements in collections");
+        System.out.println("Лабораторна робота №18");
+        System.out.println("Тема: custom exceptions + JUnit tests");
         System.out.println("Предметна область: бібліотека");
     }
 
@@ -219,50 +219,54 @@ public class Main {
     }
 
     private static void modifyObject() {
-        LibraryItem selectedItem = chooseItemFromLibrary();
+        try {
+            LibraryItem selectedItem = chooseItemFromLibrary();
 
-        if (selectedItem == null) {
-            return;
-        }
+            if (selectedItem == null) {
+                return;
+            }
 
-        Book oldBook = selectedItem.getBook();
-        Book newBook = buildModifiedBook(oldBook);
+            Book oldBook = selectedItem.getBook();
+            Book newBook = buildModifiedBook(oldBook);
 
-        if (newBook == null) {
-            System.out.println("Модифікацію скасовано.");
-            return;
-        }
+            if (newBook == null) {
+                System.out.println("Модифікацію скасовано.");
+                return;
+            }
 
-        boolean result = library.update(oldBook, newBook);
+            boolean result = library.update(oldBook, newBook);
 
-        if (result) {
-            System.out.println("Об'єкт успішно модифіковано.");
-        } else {
-            System.out.println("Об'єкт не знайдено.");
+            if (result) {
+                System.out.println("Об'єкт успішно модифіковано.");
+            }
+        } catch (InvalidFieldValueException | ObjectNotFoundException e) {
+            System.out.println("Помилка: " + e.getMessage());
         }
     }
 
     private static void deleteObject() {
-        LibraryItem selectedItem = chooseItemFromLibrary();
+        try {
+            LibraryItem selectedItem = chooseItemFromLibrary();
 
-        if (selectedItem == null) {
-            return;
-        }
+            if (selectedItem == null) {
+                return;
+            }
 
-        System.out.print("Підтвердити видалення? (yes/no): ");
-        String confirmation = scanner.nextLine().trim();
+            System.out.print("Підтвердити видалення? (yes/no): ");
+            String confirmation = scanner.nextLine().trim();
 
-        if (!confirmation.equalsIgnoreCase("yes")) {
-            System.out.println("Видалення скасовано.");
-            return;
-        }
+            if (!confirmation.equalsIgnoreCase("yes")) {
+                System.out.println("Видалення скасовано.");
+                return;
+            }
 
-        boolean result = library.delete(selectedItem.getBook());
+            boolean result = library.delete(selectedItem.getBook());
 
-        if (result) {
-            System.out.println("Об'єкт успішно видалено.");
-        } else {
-            System.out.println("Об'єкт не знайдено.");
+            if (result) {
+                System.out.println("Об'єкт успішно видалено.");
+            }
+        } catch (InvalidFieldValueException | ObjectNotFoundException e) {
+            System.out.println("Помилка: " + e.getMessage());
         }
     }
 
@@ -371,7 +375,7 @@ public class Main {
 
             library.addNewBook(new EBook(title, author, year, price, pages, genre, size, format), quantity);
             System.out.println("Додано EBook");
-        } catch (Exception e) {
+        } catch (InvalidFieldValueException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
     }
@@ -390,7 +394,7 @@ public class Main {
 
             library.addNewBook(new PaperBook(title, author, year, price, pages, genre, cover, weight), quantity);
             System.out.println("Додано PaperBook");
-        } catch (Exception e) {
+        } catch (InvalidFieldValueException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
     }
@@ -412,7 +416,7 @@ public class Main {
             library.addNewBook(new AudioBook(title, author, year, price, pages, genre,
                     size, format, duration, narrator), quantity);
             System.out.println("Додано AudioBook");
-        } catch (Exception e) {
+        } catch (InvalidFieldValueException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
     }
@@ -434,7 +438,7 @@ public class Main {
             library.addNewBook(new Textbook(title, author, year, price, pages, genre,
                     cover, weight, subject, grade), quantity);
             System.out.println("Додано Textbook");
-        } catch (Exception e) {
+        } catch (InvalidFieldValueException e) {
             System.out.println("Помилка: " + e.getMessage());
         }
     }

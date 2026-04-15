@@ -20,7 +20,7 @@ public class Library {
 
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Назва бібліотеки не може бути порожньою.");
+            throw new InvalidFieldValueException("Назва бібліотеки не може бути порожньою.");
         }
         this.name = name;
     }
@@ -31,10 +31,10 @@ public class Library {
 
     public void addNewBook(Book bk, int quantity) {
         if (bk == null) {
-            throw new IllegalArgumentException("Книга не може бути null.");
+            throw new InvalidFieldValueException("Книга не може бути null.");
         }
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Кількість повинна бути більшою за 0.");
+            throw new InvalidFieldValueException("Кількість повинна бути більшою за 0.");
         }
 
         for (LibraryItem item : items) {
@@ -47,16 +47,9 @@ public class Library {
         items.add(new LibraryItem(bk, quantity));
     }
 
-    /**
-     * Оновлює книгу в колекції.
-     *
-     * @param existingObject поточний об'єкт
-     * @param newObject новий об'єкт
-     * @return true, якщо оновлення виконано
-     */
     public boolean update(Book existingObject, Book newObject) {
         if (existingObject == null || newObject == null) {
-            return false;
+            throw new InvalidFieldValueException("Об'єкти для оновлення не можуть бути null.");
         }
 
         for (LibraryItem item : items) {
@@ -67,18 +60,12 @@ public class Library {
             }
         }
 
-        return false;
+        throw new ObjectNotFoundException("Об'єкт для оновлення не знайдено.");
     }
 
-    /**
-     * Видаляє книгу з колекції.
-     *
-     * @param existingObject об'єкт для видалення
-     * @return true, якщо видалення виконано
-     */
     public boolean delete(Book existingObject) {
         if (existingObject == null) {
-            return false;
+            throw new InvalidFieldValueException("Об'єкт для видалення не може бути null.");
         }
 
         for (int i = 0; i < items.size(); i++) {
@@ -88,7 +75,7 @@ public class Library {
             }
         }
 
-        return false;
+        throw new ObjectNotFoundException("Об'єкт для видалення не знайдено.");
     }
 
     public ArrayList<LibraryItem> searchByAuthor(String author) {
