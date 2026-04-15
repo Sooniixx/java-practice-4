@@ -29,12 +29,18 @@ public class Main {
                     createObjectMenu();
                     break;
                 case 3:
-                    library.printAllItems();
+                    modifyObject();
                     break;
                 case 4:
-                    sortMenu();
+                    deleteObject();
                     break;
                 case 5:
+                    library.printAllItems();
+                    break;
+                case 6:
+                    sortMenu();
+                    break;
+                case 7:
                     System.out.println("Роботу завершено.");
                     FileService.saveToFile(library, "input.txt");
                     running = false;
@@ -48,8 +54,8 @@ public class Main {
     }
 
     private static void printHeader() {
-        System.out.println("Лабораторна робота №16");
-        System.out.println("Тема: UUID + JavaFX GUI");
+        System.out.println("Лабораторна робота №17");
+        System.out.println("Тема: modification and deletion of elements in collections");
         System.out.println("Предметна область: бібліотека");
     }
 
@@ -57,9 +63,11 @@ public class Main {
         System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
         System.out.println("1. Пошук об'єкта");
         System.out.println("2. Створити новий об'єкт");
-        System.out.println("3. Вивести інформацію про всі об'єкти");
-        System.out.println("4. Вивести відсортовану інформацію про всі об'єкти");
-        System.out.println("5. Завершити роботу");
+        System.out.println("3. Модифікувати об'єкт");
+        System.out.println("4. Видалити об'єкт");
+        System.out.println("5. Вивести інформацію про всі об'єкти");
+        System.out.println("6. Вивести відсортовану інформацію про всі об'єкти");
+        System.out.println("7. Завершити роботу");
     }
 
     private static void sortMenu() {
@@ -208,6 +216,125 @@ public class Main {
                     System.out.println("Невірний вибір.");
             }
         }
+    }
+
+    private static void modifyObject() {
+        LibraryItem selectedItem = chooseItemFromLibrary();
+
+        if (selectedItem == null) {
+            return;
+        }
+
+        Book oldBook = selectedItem.getBook();
+        Book newBook = buildModifiedBook(oldBook);
+
+        if (newBook == null) {
+            System.out.println("Модифікацію скасовано.");
+            return;
+        }
+
+        boolean result = library.update(oldBook, newBook);
+
+        if (result) {
+            System.out.println("Об'єкт успішно модифіковано.");
+        } else {
+            System.out.println("Об'єкт не знайдено.");
+        }
+    }
+
+    private static void deleteObject() {
+        System.out.println("Видалення буде реалізовано далі.");
+    }
+
+    private static LibraryItem chooseItemFromLibrary() {
+        if (library.isEmpty()) {
+            System.out.println("Колекція порожня.");
+            return null;
+        }
+
+        library.printAllItems();
+        int index = readInt("Оберіть номер об'єкта: ");
+
+        if (index < 1 || index > library.size()) {
+            System.out.println("Невірний номер.");
+            return null;
+        }
+
+        return library.getItemByIndex(index - 1);
+    }
+
+    private static Book buildModifiedBook(Book oldBook) {
+        System.out.println("Оберіть атрибут для зміни:");
+        System.out.println("1. Назва");
+        System.out.println("2. Автор");
+        System.out.println("3. Рік");
+        System.out.println("4. Ціна");
+        System.out.println("5. Сторінки");
+        System.out.println("6. Жанр");
+        System.out.println("0. Скасувати");
+
+        int choice = readInt("Ваш вибір: ");
+
+        String title = oldBook.getTitle();
+        String author = oldBook.getAuthor();
+        int year = oldBook.getYear();
+        double price = oldBook.getPrice();
+        int pages = oldBook.getPages();
+        Genre genre = oldBook.getGenre();
+
+        switch (choice) {
+            case 1:
+                title = readNonEmptyString("Нова назва: ");
+                break;
+            case 2:
+                author = readNonEmptyString("Новий автор: ");
+                break;
+            case 3:
+                year = readInt("Новий рік: ");
+                break;
+            case 4:
+                price = readDouble("Нова ціна: ");
+                break;
+            case 5:
+                pages = readInt("Нова кількість сторінок: ");
+                break;
+            case 6:
+                genre = readGenre();
+                break;
+            case 0:
+                return null;
+            default:
+                System.out.println("Невірний вибір.");
+                return null;
+        }
+
+        if (oldBook instanceof EBook) {
+            EBook eBook = (EBook) oldBook;
+            return new EBook(title, author, year, price, pages, genre,
+                    eBook.getFileSizeMb(), eBook.getFileFormat());
+        }
+
+        if (oldBook instanceof PaperBook && !(oldBook instanceof Textbook)) {
+            PaperBook paperBook = (PaperBook) oldBook;
+            return new PaperBook(title, author, year, price, pages, genre,
+                    paperBook.getCoverType(), paperBook.getWeight());
+        }
+
+        if (oldBook instanceof AudioBook) {
+            AudioBook audioBook = (AudioBook) oldBook;
+            return new AudioBook(title, author, year, price, pages, genre,
+                    audioBook.getFileSizeMb(), audioBook.getFileFormat(),
+                    audioBook.getDurationHours(), audioBook.getNarrator());
+        }
+
+        if (oldBook instanceof Textbook) {
+            Textbook textbook = (Textbook) oldBook;
+            return new Textbook(title, author, year, price, pages, genre,
+                    textbook.getCoverType(), textbook.getWeight(),
+                    textbook.getSubject(), textbook.getGradeLevel());
+        }
+
+        return null;
     }
 
     private static void createEBook() {
