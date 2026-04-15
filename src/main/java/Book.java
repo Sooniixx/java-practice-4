@@ -43,7 +43,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
             throw new IllegalArgumentException("Об'єкт для копіювання не може бути null.");
         }
 
-        this.uuid = UUID.randomUUID();
+        this.uuid = other.uuid;
         this.title = other.title;
         this.author = other.author;
         this.year = other.year;
@@ -55,6 +55,18 @@ public abstract class Book implements Comparable<Book>, Identifiable {
     @Override
     public UUID getUuid() {
         return uuid;
+    }
+
+    /**
+     * Дозволяє зберегти UUID під час модифікації.
+     *
+     * @param uuid UUID
+     */
+    public void setUuid(UUID uuid) {
+        if (uuid == null) {
+            throw new IllegalArgumentException("UUID не може бути null.");
+        }
+        this.uuid = uuid;
     }
 
     public String getTitle() {
