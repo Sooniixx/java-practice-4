@@ -47,6 +47,50 @@ public class Library {
         items.add(new LibraryItem(bk, quantity));
     }
 
+    /**
+     * Оновлює книгу в колекції.
+     *
+     * @param existingObject поточний об'єкт
+     * @param newObject новий об'єкт
+     * @return true, якщо оновлення виконано
+     */
+    public boolean update(Book existingObject, Book newObject) {
+        if (existingObject == null || newObject == null) {
+            return false;
+        }
+
+        for (LibraryItem item : items) {
+            if (item.getBook().getUuid().equals(existingObject.getUuid())) {
+                newObject.setUuid(existingObject.getUuid());
+                item.setBook(newObject);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Видаляє книгу з колекції.
+     *
+     * @param existingObject об'єкт для видалення
+     * @return true, якщо видалення виконано
+     */
+    public boolean delete(Book existingObject) {
+        if (existingObject == null) {
+            return false;
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getBook().getUuid().equals(existingObject.getUuid())) {
+                items.remove(i);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public ArrayList<LibraryItem> searchByAuthor(String author) {
         ArrayList<LibraryItem> results = new ArrayList<LibraryItem>();
 
@@ -83,12 +127,6 @@ public class Library {
         return results;
     }
 
-    /**
-     * Пошук за UUID.
-     *
-     * @param uuid UUID книги
-     * @return знайдений елемент або null
-     */
     public LibraryItem searchByUuid(UUID uuid) {
         for (LibraryItem item : items) {
             if (item.getBook().getUuid().equals(uuid)) {
@@ -105,8 +143,8 @@ public class Library {
             return;
         }
 
-        for (LibraryItem item : items) {
-            System.out.println(item);
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println((i + 1) + ". " + items.get(i));
         }
     }
 
@@ -158,11 +196,6 @@ public class Library {
         }
     }
 
-    /**
-     * Короткий список для GUI.
-     *
-     * @return список рядків
-     */
     public ArrayList<String> getShortViewList() {
         ArrayList<String> result = new ArrayList<String>();
 
@@ -171,5 +204,21 @@ public class Library {
         }
 
         return result;
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    public LibraryItem getItemByIndex(int index) {
+        if (index < 0 || index >= items.size()) {
+            return null;
+        }
+
+        return items.get(index);
+    }
+
+    public int size() {
+        return items.size();
     }
 }
