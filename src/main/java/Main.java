@@ -243,7 +243,27 @@ public class Main {
     }
 
     private static void deleteObject() {
-        System.out.println("Видалення буде реалізовано далі.");
+        LibraryItem selectedItem = chooseItemFromLibrary();
+
+        if (selectedItem == null) {
+            return;
+        }
+
+        System.out.print("Підтвердити видалення? (yes/no): ");
+        String confirmation = scanner.nextLine().trim();
+
+        if (!confirmation.equalsIgnoreCase("yes")) {
+            System.out.println("Видалення скасовано.");
+            return;
+        }
+
+        boolean result = library.delete(selectedItem.getBook());
+
+        if (result) {
+            System.out.println("Об'єкт успішно видалено.");
+        } else {
+            System.out.println("Об'єкт не знайдено.");
+        }
     }
 
     private static LibraryItem chooseItemFromLibrary() {
