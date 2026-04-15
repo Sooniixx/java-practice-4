@@ -40,7 +40,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
      */
     public Book(Book other) {
         if (other == null) {
-            throw new IllegalArgumentException("Об'єкт для копіювання не може бути null.");
+            throw new InvalidFieldValueException("Об'єкт для копіювання не може бути null.");
         }
 
         this.uuid = other.uuid;
@@ -57,14 +57,9 @@ public abstract class Book implements Comparable<Book>, Identifiable {
         return uuid;
     }
 
-    /**
-     * Дозволяє зберегти UUID під час модифікації.
-     *
-     * @param uuid UUID
-     */
     public void setUuid(UUID uuid) {
         if (uuid == null) {
-            throw new IllegalArgumentException("UUID не може бути null.");
+            throw new InvalidFieldValueException("UUID не може бути null.");
         }
         this.uuid = uuid;
     }
@@ -75,7 +70,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
 
     public void setTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Назва книги не може бути порожньою.");
+            throw new InvalidFieldValueException("Назва книги не може бути порожньою.");
         }
         this.title = title;
     }
@@ -86,7 +81,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
 
     public void setAuthor(String author) {
         if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("Автор не може бути порожнім.");
+            throw new InvalidFieldValueException("Автор не може бути порожнім.");
         }
         this.author = author;
     }
@@ -97,7 +92,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
 
     public void setYear(int year) {
         if (year < 1400 || year > 2100) {
-            throw new IllegalArgumentException("Рік видання має бути в межах 1400-2100.");
+            throw new InvalidFieldValueException("Рік видання має бути в межах 1400-2100.");
         }
         this.year = year;
     }
@@ -108,7 +103,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
 
     public void setPrice(double price) {
         if (price <= 0) {
-            throw new IllegalArgumentException("Ціна повинна бути більшою за 0.");
+            throw new InvalidFieldValueException("Ціна повинна бути більшою за 0.");
         }
         this.price = price;
     }
@@ -119,7 +114,7 @@ public abstract class Book implements Comparable<Book>, Identifiable {
 
     public void setPages(int pages) {
         if (pages <= 0) {
-            throw new IllegalArgumentException("Кількість сторінок повинна бути більшою за 0.");
+            throw new InvalidFieldValueException("Кількість сторінок повинна бути більшою за 0.");
         }
         this.pages = pages;
     }
@@ -130,17 +125,11 @@ public abstract class Book implements Comparable<Book>, Identifiable {
 
     public void setGenre(Genre genre) {
         if (genre == null) {
-            throw new IllegalArgumentException("Жанр не може бути null.");
+            throw new InvalidFieldValueException("Жанр не може бути null.");
         }
         this.genre = genre;
     }
 
-    /**
-     * Порівнює книги за назвою, а якщо назви однакові — за автором.
-     *
-     * @param other інша книга
-     * @return результат порівняння
-     */
     @Override
     public int compareTo(Book other) {
         int titleCompare = this.title.compareToIgnoreCase(other.title);
